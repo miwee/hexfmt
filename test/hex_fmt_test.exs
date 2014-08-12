@@ -44,10 +44,10 @@ defmodule HexFmtTest do
   end
 
   test "converts an integer to a hex binary" do
-    assert HexFmt.encode(123456) == "1e240"
+    assert HexFmt.encode(123456) == "1E240"
   end
 
   test "converts an integer to a hex list" do
-    assert HexFmt.encode_to_list(123456) == '1e240'
+    assert HexFmt.encode_to_list(123456) == '1E240'
   end
 end

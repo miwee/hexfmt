@@ -19,7 +19,7 @@ defmodule HexFmt do
       "3132333435363738"
 
       iex> HexFmt.encode(12345678)
-      "bc614e"
+      "BC614E"
   """
   def encode(str) when is_binary(str) do
     str
@@ -36,7 +36,7 @@ defmodule HexFmt do
   def encode(int) when is_integer(int) do
     int
     |> :erlang.integer_to_binary(16)
-    |> String.downcase
+    |> String.upcase
   end
 
   @doc """
@@ -52,7 +52,7 @@ defmodule HexFmt do
       "0x3132333435363738"
 
       iex> HexFmt.encodep(12345678)
-      "0xbc614e"
+      "0xBC614E"
   """
   def encodep(x)  do
     "0x" <> encode(x)
@@ -70,7 +70,7 @@ defmodule HexFmt do
       '3132333435363738'
 
       iex> HexFmt.encode_to_list(12345678)
-      'bc614e'
+      'BC614E'
   """
   def encode_to_list(str) when is_binary(str) do
     binary_to_hex_list(str)
@@ -83,7 +83,7 @@ defmodule HexFmt do
   def encode_to_list(int) when is_integer(int) do
     int 
     |> :erlang.integer_to_list(16)
-    |> :string.to_lower
+    |> :string.to_upper
   end
 
   @doc """
