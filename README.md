@@ -1,7 +1,7 @@
 # hexfmt
 Hex formatter and ~h sigil for Elixir
 
-Based on work by https://github.com/rjsamson/hex. 
+Based on work by https://github.com/rjsamson/hex
 
 Changed the name to avoid conflict with https://hex.pm
 
@@ -24,7 +24,7 @@ iex> HexFmt.decode("3132333435363738")
 "12345678"
 ```
 
-Returns an hex string visual representation of a given list or binary. No need to insert leading '0', just to see the contents of a list. 
+Returns a hex string visual representation of a given list or binary. No need to insert leading '0', just to see the contents of a list. 
 
 ```elixir 
 iex> HexFmt.hexify(<<18, 52, 86, 120>>)

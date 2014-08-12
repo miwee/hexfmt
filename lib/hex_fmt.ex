@@ -235,7 +235,7 @@ defmodule HexFmt do
   end
 
   defp to_hex(i) when i >= 10 and i < 16 do
-    ?a + (i - 10)
+    ?A + (i - 10)
   end
 
   defp to_int(c) when ?0 <= c and c <= ?9 do
