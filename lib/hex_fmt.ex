@@ -12,14 +12,14 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.encode("This is a test.")
-      "54686973206973206120746573742e"
+      iex> HexFmt.encode("12345678")
+      "3132333435363738"
 
-      iex> HexFmt.encode('This is a test.')
-      "54686973206973206120746573742e"
+      iex> HexFmt.encode('12345678')
+      "3132333435363738"
 
-      iex> HexFmt.encode(123456)
-      "1e240"
+      iex> HexFmt.encode(12345678)
+      "bc614e"
   """
   def encode(str) when is_binary(str) do
     str
@@ -45,14 +45,14 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.encodep("This is a test.")
-      "0x54686973206973206120746573742e"
+      iex> HexFmt.encodep("12345678")
+      "0x3132333435363738"
 
-      iex> HexFmt.encodep('This is a test.')
-      "0x54686973206973206120746573742e"
+      iex> HexFmt.encodep('12345678')
+      "0x3132333435363738"
 
-      iex> HexFmt.encodep(123456)
-      "0x1e240"
+      iex> HexFmt.encodep(12345678)
+      "0xbc614e"
   """
   def encodep(x)  do
     "0x" <> encode(x)
@@ -63,14 +63,14 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.encode_to_list("This is a test.")
-      '54686973206973206120746573742e'
+      iex> HexFmt.encode_to_list("12345678")
+      '3132333435363738'
 
-      iex> HexFmt.encode_to_list('This is a test.')
-      '54686973206973206120746573742e'
+      iex> HexFmt.encode_to_list('12345678')
+      '3132333435363738'
 
-      iex> HexFmt.encode_to_list(123456)
-      '1e240'
+      iex> HexFmt.encode_to_list(12345678)
+      'bc614e'
   """
   def encode_to_list(str) when is_binary(str) do
     binary_to_hex_list(str)
@@ -92,14 +92,14 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.decode("54686973206973206120746573742e")
-      "This is a test."
+      iex> HexFmt.decode("3132333435363738")
+      "12345678"
 
-      iex> HexFmt.decode('54686973206973206120746573742e')
-      "This is a test."
+      iex> HexFmt.decode('3132333435363738')
+      "12345678"
 
-      iex> HexFmt.decode("0x54686973206973206120746573742e")
-      "This is a test."
+      iex> HexFmt.decode("0x3132333435363738")
+      "12345678"
   """
   def decode(hex_str) when is_binary(hex_str) do
     hex_str2 = case String.split(hex_str, "0x") do
@@ -125,11 +125,11 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.decode_to_list("54686973206973206120746573742e")
-      'This is a test.'
+      iex> HexFmt.decode_to_list("3132333435363738")
+      '12345678'
 
-      iex> HexFmt.decode_to_list('54686973206973206120746573742e')
-      'This is a test.'
+      iex> HexFmt.decode_to_list('3132333435363738')
+      '12345678'
   """
   def decode_to_list(hex_str) when is_binary(hex_str) do
     hex_str
@@ -147,11 +147,20 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.hexify([0x11, 0x12, 0x13, 0x14])
-      "[0x11, 0x12, 0x13, 0x14]"
+      iex> HexFmt.hexify([0x12, 0x34, 0x56, 0x78])
+      "[0x12, 0x34, 0x56, 0x78]"
 
-      iex> HexFmt.hexify(<<0x11, 0x12, 0x13, 0x14>>)
-      "<<0x11, 0x12, 0x13, 0x14>>"
+      iex> HexFmt.hexify(<<0x12, 0x34, 0x56, 0x78>>)
+      "<<0x12, 0x34, 0x56, 0x78>>"
+
+      iex> HexFmt.hexify([18, 52, 86, 120])
+      "[0x12, 0x34, 0x56, 0x78]"
+
+      iex> HexFmt.hexify(<<18, 52, 86, 120>>)
+      "<<0x12, 0x34, 0x56, 0x78>>"
+
+      iex> HexFmt.hexify('1!')
+      "[0x31, 0x21]"
   """
   def hexify(str) when is_list(str) do
     "[" <> hexify_do(str) <> "]"
@@ -181,11 +190,11 @@ defmodule HexFmt do
 
   ## Examples
 
-      iex> HexFmt.to_integer('54686973206973206120746573742e')
-      438270661302729020147902120434299950
+      iex> HexFmt.to_integer('3132333435363738')
+      3544952156018063160
 
-      iex> HexFmt.to_integer("54686973206973206120746573742e")
-      438270661302729020147902120434299950
+      iex> HexFmt.to_integer("3132333435363738")
+      3544952156018063160
   """
   def to_integer(hex_str) when is_list(hex_str) do
     :erlang.list_to_integer(hex_str, 16)
