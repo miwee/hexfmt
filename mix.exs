@@ -1,4 +1,4 @@
-defmodule HexFmt.Mixfile do
+defmodule Hexfmt.Mixfile do
   use Mix.Project
 
   def project do

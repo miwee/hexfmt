@@ -23,7 +23,7 @@ defmodule HexSigil do
   def sigil_h(str, [?l]) do
     str
     |> String.replace(" ", "")
-    |> HexFmt.decode_to_list
+    |> Hexfmt.decode_to_list
   end
   def sigil_h(str, [?x]) do
     convert_to_int = fn (x) ->
@@ -40,11 +40,11 @@ defmodule HexSigil do
     |> String.downcase
     |> String.split(",")
     |> Enum.map(convert_to_int)
-    |> HexFmt.encode
+    |> Hexfmt.encode
   end
   def sigil_h(str, []) do
     str
     |> String.replace(" ", "")
-    |> HexFmt.decode
+    |> Hexfmt.decode
   end
 end
