@@ -145,7 +145,7 @@ defmodule Hexfmt do
 
   def decode(hex_str) when is_list(hex_str) do 
     [a, b | hex_str2] = hex_str
-    if a == ?0 and b == ?x do
+    if [a, b] == '0x' do
       decode_do(hex_str2, "")
     else
       decode_do(hex_str, "")
@@ -196,7 +196,7 @@ defmodule Hexfmt do
 
   def decode_to_list(hex_str) when is_list(hex_str) do 
     [a, b | hex_str2] = hex_str
-    if a == ?0 and b == ?x do
+    if [a, b] == '0x' do
       decode_to_list_do(hex_str2, [])
     else
       decode_to_list_do(hex_str, [])
@@ -246,25 +246,37 @@ defmodule Hexfmt do
       "[0x31, 0x21]"
   """
   def hexify(str) when is_list(str) do
-    "[" <> hexify_do(str) <> "]"
+    "[" <> hexify_do(str, "") <> "]"
   end
 
   def hexify(str) when is_binary(str) do
-    str2 = str
-      |> :erlang.binary_to_list
-      |> hexify_do
-    "<<" <> str2 <> ">>"
+    "<<" <> hexify_do(str, "") <> ">>"
   end
 
-  defp hexify_do(str) do
-    fn_strip_last = fn (x) -> 
-      String.slice(x, 0, String.length(x)-2) 
-    end
-    
-    str
-    |> Enum.map(&encodep/1)
-    |> Enum.reduce("", fn(x, acc) -> acc <> (x <> ", ") end)
-    |> fn_strip_last.()
+  defp hexify_do(<<x::size(8)>>, acc) do
+    hexify_do_step1(x, acc)
+  end
+
+  defp hexify_do(<<x::size(8), remain::binary>>, acc) do
+    hexify_do_step(x, remain, acc)
+  end
+
+  defp hexify_do([x], acc) do
+    hexify_do_step1(x, acc)
+  end
+
+  defp hexify_do([x | remain], acc) do
+    hexify_do_step(x, remain, acc)
+  end
+
+  defp hexify_do_step1(x, acc) do
+    x2 = :erlang.integer_to_binary(x, 16)
+    acc <> <<"0x", x2::binary>>
+  end
+
+  defp hexify_do_step(x, remain, acc) do
+    x2 = :erlang.integer_to_binary(x, 16)
+    hexify_do(remain, acc <> <<"0x", x2::binary, ", ">>)
   end
 
   @doc """
