@@ -25,23 +25,23 @@ defmodule HexSigil do
     |> String.replace(" ", "")
     |> Hexfmt.decode_to_list
   end
+
   def sigil_h(str, [?x]) do
     convert_to_int = fn (x) ->
-      x = String.strip(x)
       if String.starts_with?(x, "0x") do
-        x = String.slice(x, 2, String.length(x)-2)
-        :erlang.binary_to_integer(x, 16)
+        <<"0x", x2::binary>> = x
+        :erlang.binary_to_integer(x2, 16)
       else
         :erlang.binary_to_integer(x, 10)
       end
     end
 
     str
-    |> String.downcase
     |> String.split(",")
     |> Enum.map(convert_to_int)
     |> Hexfmt.encode
   end
+  
   def sigil_h(str, []) do
     str
     |> String.replace(" ", "")
