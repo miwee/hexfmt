@@ -18,7 +18,7 @@ defmodule HexSigil do
   and converts it into an String containing hex characters [0..9, A..F] 
   Example: 
     ~h{0x12, 0x34, 0x56, 0x78}x == "12345678"
-    ~h{18, 52, 86, 120}x == "12345678"
+    ~h{18, 2, 86, 120}x == "12035678"
   """  
   def sigil_h(str, [?l]) do
     str
@@ -37,6 +37,7 @@ defmodule HexSigil do
     end
 
     str
+    |> String.replace(" ", "")
     |> String.split(",")
     |> Enum.map(convert_to_int)
     |> Hexfmt.encode

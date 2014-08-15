@@ -18,6 +18,12 @@ defmodule Hexfmt do
       iex> Hexfmt.encode('12345678')
       "3132333435363738"
 
+      iex> Hexfmt.encode("\x01\x02\x03\x04")
+      "01020304"
+
+      iex> Hexfmt.encode([1, 2, 3, 4])
+      "01020304"
+
       iex> Hexfmt.encode(12345678)
       "BC614E"
   """
@@ -46,8 +52,12 @@ defmodule Hexfmt do
   end
 
   defp encode_do_step(x, remain, acc) do
-    x2 = :erlang.integer_to_binary(x, 16)
-    encode_do(remain, acc <> x2)
+    case :erlang.integer_to_binary(x, 16) do
+      <<a::size(8), b::size(8)>> ->
+        encode_do(remain, acc <> <<a, b>>)
+      <<b::size(8)>> ->
+        encode_do(remain, acc <> <<?0, b>>)
+    end
   end
 
   @doc """
@@ -270,13 +280,21 @@ defmodule Hexfmt do
   end
 
   defp hexify_do_step1(x, acc) do
-    x2 = :erlang.integer_to_binary(x, 16)
-    acc <> <<"0x", x2::binary>>
+    case :erlang.integer_to_binary(x, 16) do
+      <<a::size(8), b::size(8)>> ->
+        acc <> <<"0x", a, b>>
+      <<b::size(8)>> ->
+        acc <> <<"0x", ?0, b>>
+    end
   end
 
   defp hexify_do_step(x, remain, acc) do
-    x2 = :erlang.integer_to_binary(x, 16)
-    hexify_do(remain, acc <> <<"0x", x2::binary, ", ">>)
+    case :erlang.integer_to_binary(x, 16) do
+      <<a::size(8), b::size(8)>> ->
+        hexify_do(remain, acc <> <<"0x", a, b, ", ">>)
+      <<b::size(8)>> ->
+        hexify_do(remain, acc <> <<"0x", ?0, b, ", ">>)
+    end
   end
 
   @doc """
