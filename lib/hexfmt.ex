@@ -240,20 +240,11 @@ defmodule Hexfmt do
 
   ## Examples
 
-      iex> Hexfmt.hexify([0x12, 0x34, 0x56, 0x78])
-      "[0x12, 0x34, 0x56, 0x78]"
+      iex> Hexfmt.hexify('ABcd')
+      "[0x41, 0x42, 0x63, 0x64]"
 
-      iex> Hexfmt.hexify(<<0x12, 0x34, 0x56, 0x78>>)
-      "<<0x12, 0x34, 0x56, 0x78>>"
-
-      iex> Hexfmt.hexify([18, 52, 86, 120])
-      "[0x12, 0x34, 0x56, 0x78]"
-
-      iex> Hexfmt.hexify(<<18, 52, 86, 120>>)
-      "<<0x12, 0x34, 0x56, 0x78>>"
-
-      iex> Hexfmt.hexify('1!')
-      "[0x31, 0x21]"
+      iex> Hexfmt.hexify("ABcd")
+      "<<0x41, 0x42, 0x63, 0x64>>"
   """
   def hexify(str) when is_list(str) do
     "[" <> hexify_do(str, "") <> "]"
@@ -295,6 +286,27 @@ defmodule Hexfmt do
       <<b::size(8)>> ->
         hexify_do(remain, acc <> <<"0x", ?0, b, ", ">>)
     end
+  end
+
+  @doc """
+  Returns decimal string visual representation of a given 
+  list or binary.
+
+  ## Examples
+
+      iex> Hexfmt.decify('ABcd')
+      "[65, 66, 99, 100]"
+
+      iex> Hexfmt.decify("ABcd")
+      "<<65, 66, 99, 100>>"
+  """
+  def decify(str) when is_list(str) do
+    <<"[0, ", r::binary>> = inspect([0 | str])
+    "[" <> r
+  end
+
+  def decify(str) when is_binary(str) do
+    inspect(str, binaries: :as_binaries)
   end
 
   @doc """

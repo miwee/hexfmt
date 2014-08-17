@@ -27,11 +27,21 @@ iex> Hexfmt.decode("3132333435363738")
 Returns a hex string visual representation of a given list or binary. No need to insert leading '0', just to see the contents of a list. 
 
 ```elixir 
-iex> Hexfmt.hexify(<<18, 52, 86, 120>>)
-"<<0x12, 0x34, 0x56, 0x78>>"
+iex> Hexfmt.hexify('ABcd')
+"[0x41, 0x42, 0x63, 0x64]"
 
-iex> Hexfmt.hexify('1!')
-"[0x31, 0x21]"
+iex> Hexfmt.hexify("ABcd")
+"<<0x41, 0x42, 0x63, 0x64>>"
+```
+
+Returns a decimal string visual representation of a given list or binary. No need to insert leading '0', just to see the contents of a list. 
+
+```elixir 
+iex> Hexfmt.decify('ABcd')
+"[65, 66, 99, 100]"
+
+iex> Hexfmt.decify("ABcd")
+"<<65, 66, 99, 100>>"
 ```
 
 ### `~h` Sigil
