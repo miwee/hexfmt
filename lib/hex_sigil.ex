@@ -20,13 +20,19 @@ defmodule HexSigil do
     ~h{0x12, 0x34, 0x56, 0x78}x == "12345678"
     ~h{18, 2, 86, 120}x == "12035678"
   """  
-  def sigil_h(str, [?l]) do
+  defmacro sigil_h(str, options) do
+    quote do
+      fun_sigil_h(unquote(str), unquote(options))
+    end
+  end
+
+  def fun_sigil_h(str, [?l]) do
     str
     |> String.replace(" ", "")
     |> Hexfmt.decode_to_list
   end
 
-  def sigil_h(str, [?x]) do
+  def fun_sigil_h(str, [?x]) do
     convert_to_int = fn (x) ->
       if String.starts_with?(x, "0x") do
         <<"0x", x2::binary>> = x
@@ -43,7 +49,7 @@ defmodule HexSigil do
     |> Hexfmt.encode
   end
   
-  def sigil_h(str, []) do
+  def fun_sigil_h(str, []) do
     str
     |> String.replace(" ", "")
     |> Hexfmt.decode
